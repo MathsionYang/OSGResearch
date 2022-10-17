@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/OSGResearch_VS">
+        <file>qss/model.png</file>
+    </qresource>
+</RCC>
