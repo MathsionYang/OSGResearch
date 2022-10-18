@@ -3,17 +3,28 @@
 #include <qscreen.h>
 #include <QLabel>
 #include <osgDB/ReadFile>
+#include <qdebug.h>
+#include <QFileInfo>
 OSGResearch_VS::OSGResearch_VS(QWidget *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
     m_ptrModelViewer = QSharedPointer<ModelViewer>(new ModelViewer(this));
+    m_ptrModelMenu = QSharedPointer<ModelMenu>(new ModelMenu(this));
+    this->setMenuBar(m_ptrModelMenu.data());
+    this->addToolBar(m_ptrModelMenu->getToolBar());
+
+    //初始化工程文件树
+    m_ptrRightTree = new ModelRightTree(this);
+   
+
     initWindowsLayout();
 
-    std::string osgPath = "F:\\OSGB365\\OSGData\\cow.osg";
-    osg::Node* node = new osg::Node;
-    node = osgDB::readNodeFile(osgPath);
-    m_ptrModelViewer->setSceneData(node);
+   
+
+
+    connect(m_ptrModelMenu.data(), SIGNAL(sendResponseArgu(int, QStringList)), this, SLOT(recvResponseArgu(int, QStringList)));
+
 }
 
 OSGResearch_VS::~OSGResearch_VS()
@@ -84,4 +95,38 @@ void OSGResearch_VS::initWindowsLayout()
     splitDockWidget(m_dockModelInfo, m_dockOtherInfo, Qt::Vertical);
 
     m_dockMain->setWidget(m_ptrModelViewer.data());
+
+    m_dockProInfo->setWidget(m_ptrRightTree);
+}
+void OSGResearch_VS::openNewFiles(const QStringList& strList)
+{
+    if (strList.size() <= 0)
+        return;
+    for (QString str : strList)
+    {
+        if (QFileInfo(str).suffix().contains("osg", Qt::CaseInsensitive))
+        {
+            m_ptrRightTree->addSubModelItem(str);
+        }
+    }
+    m_ptrRightTree->update();
+   int a =  m_ptrRightTree->topLevelItem(0)->childCount();
+    m_dockProInfo->update();
+    /*std::string osgPath = "F:\\OSGB365\\OSGData\\cow.osg";
+    osg::Node* node = new osg::Node;
+    node = osgDB::readNodeFile(osgPath);*/
+ 
+}
+void OSGResearch_VS::recvResponseArgu(int type, QStringList strList)
+{
+    if (type = 0 || strList.size() <= 0)
+        return;
+    switch (type)
+    {
+    case OPENFILE:
+        openNewFiles(strList);
+        break;
+    default:
+        break;
+    }
 }
