@@ -1,9 +1,10 @@
 #pragma once
 #include <QObject>
-#include <QTreeWidget>
-#include <QTreeWidgetItem>
+#include <QTreeView>
+#include <QStandardItemModel>
+#include <QStandardItem >
 #include <QSharedPointer>
-class ModelRightTree  : public QTreeWidget
+class ModelRightTree  : public QTreeView
 {
 	Q_OBJECT
 
@@ -15,7 +16,7 @@ public:
 
 private:
 	void initTree();
-
-	QSharedPointer<QTreeWidgetItem> m_ptrItemModel;
-	QSharedPointer<QTreeWidgetItem> m_ptrItemVector;
+	QSharedPointer<QStandardItemModel> m_ptrStandardModel;
+	QSharedPointer<QStandardItem > m_ptrItemModel;
+	QSharedPointer<QStandardItem > m_ptrItemVector;
 };

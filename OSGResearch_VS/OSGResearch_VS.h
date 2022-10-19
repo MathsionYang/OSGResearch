@@ -26,10 +26,7 @@ private:
     QPointer<QDockWidget> m_dockMain;
     // 显示工程信息的区域
     QPointer<QDockWidget> m_dockProInfo;
-    // 显示信息的区域
-    QPointer<QDockWidget> m_dockModelInfo;
-    // 显示其他信息的区域
-    QPointer<QDockWidget> m_dockOtherInfo;
+
     // 工程文件树
     QPointer<ModelRightTree> m_ptrRightTree;
     //初始化界面

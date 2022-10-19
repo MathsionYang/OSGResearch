@@ -55,7 +55,6 @@ void OSGResearch_VS::initWindowsLayout()
     lab_cprt->setStyleSheet("color:#000000;margin-right:10px;");
     stBar->addPermanentWidget(lab_cprt);
     stBar->setStyleSheet("background:#ffffff;border: 1px solid black;");
-
     // 点云显示区域
     m_dockMain = new QDockWidget(this);
     m_dockMain->setWindowTitle(QStringLiteral("模型"));
@@ -63,36 +62,15 @@ void OSGResearch_VS::initWindowsLayout()
     m_dockMain->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     // 可移动范围：左右
     m_dockMain->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-
     // 工程信息
     m_dockProInfo = new QDockWidget(this);
     m_dockProInfo->setWindowTitle(QStringLiteral("工程"));
     m_dockProInfo->setFeatures(QDockWidget::DockWidgetClosable);
-
-    // 点云信息
-    m_dockModelInfo = new QDockWidget(this);
-    m_dockModelInfo->setWindowTitle(QStringLiteral("属性"));
-    m_dockModelInfo->setFeatures(QDockWidget::AllDockWidgetFeatures);
-
-    // 其他信息
-    m_dockOtherInfo = new QDockWidget(this);
-    m_dockOtherInfo->setWindowTitle(QStringLiteral("其他"));
-    m_dockOtherInfo->setFeatures(QDockWidget::AllDockWidgetFeatures);
-
     // 设置子窗体大小
     m_dockProInfo->setFixedWidth(200);
-    m_dockModelInfo->setFixedWidth(200);
-    m_dockOtherInfo->setFixedWidth(200);
-    m_dockModelInfo->setMaximumHeight(400);
-
     // 布局方向
     setCentralWidget(m_dockMain);
     addDockWidget(Qt::LeftDockWidgetArea, m_dockProInfo);
-    addDockWidget(Qt::RightDockWidgetArea, m_dockModelInfo);
-    addDockWidget(Qt::RightDockWidgetArea, m_dockOtherInfo);
-
-    // 布局方向
-    splitDockWidget(m_dockModelInfo, m_dockOtherInfo, Qt::Vertical);
 
     m_dockMain->setWidget(m_ptrModelViewer.data());
 
@@ -110,12 +88,13 @@ void OSGResearch_VS::openNewFiles(const QStringList& strList)
         }
     }
     m_ptrRightTree->update();
-   int a =  m_ptrRightTree->topLevelItem(0)->childCount();
+  
     m_dockProInfo->update();
-    /*std::string osgPath = "F:\\OSGB365\\OSGData\\cow.osg";
+    std::string osgPath = "F:\\OSGB365\\OSGData\\cow.osg";
     osg::Node* node = new osg::Node;
-    node = osgDB::readNodeFile(osgPath);*/
- 
+    node = osgDB::readNodeFile(osgPath);
+    m_ptrModelViewer->setSceneData(node);
+    m_ptrModelViewer->run();
 }
 void OSGResearch_VS::recvResponseArgu(int type, QStringList strList)
 {
